@@ -1,0 +1,109 @@
+
+{#   {% if not user.is_authenticated %}#}
+{##}
+{#    <script>#}
+{#           alert('请先登录')#}
+{#        </script>#}
+{#    {% endif %}#}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title></title>
+    	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/htmleaf-demo.css"><!--演示页面样式，使用时可以不引用-->
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+   {% if user.is_authenticated %}
+     <li>User: {{ user.get_username }}</li>
+     <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+{#   {% else %}#}
+{#        <script>#}
+{#           alert('请先登录')#}
+{#        </script>#}
+{#     <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>#}
+   {% endif %}
+
+
+
+{#    <h1>Borrowed books</h1>#}
+{##}
+{#    {% if bookinstance_list %}#}
+{#    <ul>#}
+{##}
+{#      {% for bookinst in bookinstance_list %}#}
+{#      <li class="{% if bookinst.is_overdue %}text-danger{% endif %}">#}
+{#        <a href="{% url 'book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a> ({{ bookinst.date_back  }})#}
+{#      </li>#}
+{#      {% endfor %}#}
+{#    </ul>#}
+{##}
+{#    {% else %}#}
+{#      <p>当前没有已借阅书籍</p>#}
+{#    {% endif %}#}
+
+
+ <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+            <li class="active"><a href="/home/">个人中心</a></li>
+            <li><a href="/search/">借书</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="page-header">正在借阅</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">书名</th>
+                  <th scope="col">作者</th>
+                  <th scope="col">出版社</th>
+                  <th scope="col">借出时间</th>
+                  <th scope="col">归还期限</th>
+                  <th scope="col">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for books in bookinstance_list %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <a href="{% url 'book-detail' books.book.pk %}"><td>{{ books.book.title }}</td></a>
+                        <td>{{ books.book.author }}</td>
+                        <td>{{ books.book.pub }}</td>
+                        <td>{{ books.date_borrow }}</td>
+                        <td>{{ books.date_back }}</td>
+                        <td><a class="btn btn-primary btn-sm" href="/return/?book_id={{ books.book.id }}">还书</a></td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+        {% if not bookinstance_list %}
+            <h5 class="page-header" align="center">您当前没有借书记录</h5>
+        {% endif %}
+  {% if messages %}
+              <script>
+                  {% for msg in messages %}
+                      alert('{{ msg.message }}');
+                  {% endfor %}
+              </script>
+          {% endif %}
+    </div>
+{% endblock %}
+
+
+
+</body>
+</html>

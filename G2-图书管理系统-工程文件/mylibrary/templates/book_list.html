@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/htmleaf-demo.css"><!--演示页面样式，使用时可以不引用-->
+	<link rel="stylesheet" href="style.css">
+    <title>Title</title>
+</head>
+<body>
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+     <h1>书籍列表</h1>
+	<div class="wrapper mt-4">
+		    <div class="container">
+		        <div class="row">
+		            <div class="col-12">
+		                <div class="jumbotron">
+		                    <h1>你好！欢迎来到本校的线上图书馆！</h1>
+		                    <p>目前藏书有{{ num_of_books }}册</p>
+                            <p>涉及的国内外作者达{{ num_of_authors }}人</p>
+		                </div>
+		            </div>
+		        </div>
+		        <div class="row">
+                    {% if book_list %}
+    <ul>
+
+     {% for book in book_list %}
+             <div class="col-md-6 col-lg-4">
+
+
+		                <h2>{{ book.title }}</h2>
+                        <h4> 作者:{{book.author}}</h4>
+		                <p>本书概述：{{ book.summary }}</p>
+		                <p><a class="btn btn-secondary" href="{{ book.get_absolute_url }}" role="button">查看详情 &raquo;</a></p>
+                        <p>{{ book.get_absolute_url}}fgfg</p>
+      <li>
+      </li>
+             </div>
+
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>There are no books in the library.</p>
+    {% endif %}
+		        </div>
+		    </div>
+		</div>
+
+{% endblock %}
+
+</body>
+</html>

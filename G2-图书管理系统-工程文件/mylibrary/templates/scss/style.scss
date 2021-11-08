@@ -1,0 +1,336 @@
+// Some variables
+$navbar-height: 75px;
+$sidebar-width: 424px;
+
+$off-canvas: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+
+
+.wrapper {
+    transition: $off-canvas;
+}
+
+.navbar {
+    height: $navbar-height;
+    transition: all .5s .1s;
+}
+
+.navbar-offcanvas {
+    z-index: 1030;
+    
+    .container-fluid {
+        position: relative;
+        padding: 0;
+        transform: translate3d(0px, 0, 0);
+        transition: $off-canvas;
+    }
+    
+    .navbar-top {
+        display: none;
+        
+        @media (min-width: 992px) {
+            display: flex;
+            margin-left: auto;
+        }
+        
+        .nav-item {
+            margin-right: 22px;
+            text-align: center;
+            
+            .nav-link {
+                @media (max-width: 991px) {
+                    color: #000;
+                }
+            }
+        }
+    }
+    
+    .navbar-toggler {
+        padding: 0;
+        border: 0;
+        outline: none;
+        
+        &:hover,
+        &:focus {
+            cursor: pointer;
+        }
+        
+        @media (min-width: 768px) {
+            display: block;
+        }
+        
+        .icon-bar {
+            display: block;
+            position: relative;
+            width: 24px;
+            height: 2px;
+            border-radius: 1px;
+            background-color: #fff;
+            
+            + .icon-bar {
+                margin-top: 4px;
+            }
+            
+            &.bar1 {
+                top: 0;
+                outline: 1px solid transparent;
+                animation: topbar-back 500ms 0s;
+                animation-fill-mode: forwards;
+            }
+            
+            &.bar2 {
+                outline: 1px solid transparent;
+                opacity: 1;
+            }
+            
+            &.bar3 {
+                bottom: 0;
+                outline: 1px solid transparent;
+                animation: bottombar-back 500ms 0s;
+                animation-fill-mode: forwards;
+            }
+        }
+        
+        &.toggled {
+            .icon-bar {
+                &.bar1 {
+                    top: 6px;
+                    animation: topbar-x 500ms 0s;
+                    animation-fill-mode: forwards;
+                }
+                
+                &.bar2 {
+                    opacity: 0;
+                }
+                
+                &.bar3 {
+                    bottom: 6px;
+                    animation: bottombar-x 500ms 0s;
+                    animation-fill-mode: forwards;
+                }
+            }
+        }
+    }    
+    
+    .navbar-collapse.collapse,
+    .navbar-collapse.collapse.in,
+    .navbar-collapse.collapsing {
+        display: none !important;
+    }
+}
+
+.nav-open {
+    .navbar-collapse {
+        transform: translate3d(0px, 0, 0);        
+    }
+    
+    .navbar > .container-fluid {
+        transform: translate3d(-#{$sidebar-width}, 0, 0);
+        
+        @media (max-width: 991px) {
+            transform: translate3d(-#{$sidebar-width / 1.5}, 0, 0);
+        }
+    }
+    
+    .wrapper {
+        transform: translate3d(-150px, 0, 0);
+    }
+}
+
+body > .navbar-collapse {
+    display: block !important;
+    position: fixed;
+    top: 0;
+    right: -10px;
+    width: $sidebar-width;
+    height: 100%;
+    padding: 60px 1rem;
+    background-color: #fff;
+    border-left: 1px solid #e3e3e3;
+    text-align: center;
+    visibility: visible;    
+    overflow-y: visible;
+    transform: translate3d($sidebar-width, 0, 0);
+    transition: $off-canvas;
+    z-index: 1032;
+    
+    &:after {
+        content: "";
+        position: absolute;
+        top: 28px;
+        left: -20px;
+        border-left: 10px solid #fff;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: 10px solid transparent;
+        transform: rotate(180deg);
+        transition: $off-canvas;
+        z-index: 1032;
+    }
+    
+    @media (max-width: 991px) {
+        width: $sidebar-width / 1.5;
+    }
+    
+    .nav-image {
+        margin-bottom: 65px;
+        
+        img {
+            display: block;
+            margin: 0 auto;
+            border: 1px solid rgba(0,0,0,.14); // MOCKUP
+            width: 91px;
+            height: 69px;            
+        }
+    }
+    
+    .navbar-top {
+        margin: 0 !important;
+        flex-direction: column;
+        
+        @media (min-width: 992px) {
+            display: none;
+        }
+            
+        li {
+            text-align: center;
+            
+            a {
+                display: block;
+                padding: .5rem 1rem;
+                font-weight: 700;
+                color: #000;
+                
+                &:hover,
+                &:focus {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+    
+    .nav-link,
+    .dropdown-toggle {
+        font-weight: 700;
+        color: #222;
+        transition: color .2s ease-out;
+        
+        &:hover,
+        &:focus {
+            text-decoration: none;
+        }
+        
+        &.disabled {
+            color: rgba(0,0,0,.35);
+            
+            &:hover,
+            &:focus {
+                cursor: not-allowed;
+            }
+        }
+    }
+}
+
+body > .navbar-top {
+    @media (min-width: 992px) {
+        display: none;
+    }
+}
+
+body > #overlay {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: auto;
+    right: calc(#{$sidebar-width / 1.5} - 10px);
+    width: 100%;
+    height: 100%;    
+    opacity: 0;
+    overflow-x: hidden;
+    z-index: 1029;
+    
+    @media (min-width: 992px) {
+        right: calc(#{$sidebar-width} - 10px);
+    }
+}
+
+
+// ANIMATIONS
+@keyframes topbar-x {
+    0% {
+        top: 0px;
+        transform: rotate(0deg);
+    }
+
+    45% {
+        top: 6px;
+        transform: rotate(145deg);
+    }
+
+    75% {
+        transform: rotate(130deg);
+    }
+
+    100% {
+        transform: rotate(135deg);
+    }
+}
+
+@keyframes topbar-back {
+    0% {
+        top: 6px;
+        transform: rotate(135deg);
+    }
+
+    45% {
+        transform: rotate(-10deg);
+    }
+
+    75% {
+        transform: rotate(5deg);
+    }
+
+    100% {
+        top: 0px;
+        transform: rotate(0);
+    }
+}
+
+@keyframes bottombar-x {
+    0% {
+        bottom: 0px;
+        transform: rotate(0deg);
+    }
+
+    45% {
+        bottom: 6px;
+        transform: rotate(-145deg);
+    }
+
+    75% {
+        transform: rotate(-130deg);
+    }
+
+    100% {
+        transform: rotate(-135deg);
+    }
+}
+
+@keyframes bottombar-back {
+    0% {
+        bottom: 6px;
+        transform: rotate(-135deg);
+    }
+
+    45% {
+        transform: rotate(10deg);
+    }
+
+    75% {
+        transform: rotate(-5deg);
+    }
+
+    100% {
+        bottom: 0px;
+        transform: rotate(0);
+    }
+}

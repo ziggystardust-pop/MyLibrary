@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title></title>
+    	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/htmleaf-demo.css"><!--演示页面样式，使用时可以不引用-->
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+{% extends 'base_generic.html' %}
+{% load static %}
+{% block title %}借书{% endblock %}
+{% block css %}<link href="{% static 'css/search.css' %}" rel="stylesheet"/>{% endblock %}
+
+{% block content %}
+       {% if user.is_authenticated %}
+     <li>User: {{ user.get_username }}</li>
+     <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+{#   {% else %}#}
+{#        <script>#}
+{#           alert('请先登录')#}
+{#        </script>#}
+{#     <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>#}
+   {% endif %}
+    <div class="col-sm-3 col-md-2 sidebar" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+{#        <ul class="nav nav-sidebar">#}
+{#            <li><a href="/home/">个人中心</a></li>#}
+            <li class="active"><a href="/search/">借书</a></li>
+{#        </ul>#}
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="row placeholders">
+            <form class="form-search" action="/search/" method="get">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    {{ search }}
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">查询</button>
+            </form>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">书名</th>
+                  <th scope="col">作者</th>
+                  <th scope="col">出版社</th>
+                  <th scope="col">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for book in books %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.pub }}</td>
+                        {% if book.is_aviliable %}
+                            <td><a class="btn btn-success btn-sm" href="/borrow/?book_id={{ book.id }}">借书</a></td>
+                        {% else %}
+                            <td>已借出</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+        {% if message %}
+          <div class="alert alert-warning">{{ message }}</div>
+        {% endif %}
+    </div>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,23 @@
+body {
+  background-image: url('../img/2.jpg');
+  height: 100%;
+  width : 100%;
+  background-size:100%;
+}
+
+.register_form {
+  width: 100%;
+  height: 100%;
+  max-width: 500px;    /*  段落最大宽度*/
+  margin:auto;     /*  外边距*/
+}
+
+
+form a{
+  margin-top:20px;
+  font-size: 20px;
+}
+
+form button{
+  margin-top:20px;
+}
